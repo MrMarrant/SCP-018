@@ -31,7 +31,7 @@ function ENT:RebuildPhysics( value )
 	self:PhysWake()
 end
 
-local BounceSound = Sound( "garrysmod/balloon_pop_cute.wav" )
+local BounceSound = Sound( "bouncy_ball/ball_noise.mp3" )
 
 function ENT:PhysicsCollide( data, physobj )
 	if ( data.Speed > 50 and data.DeltaTime > 0.01) then
