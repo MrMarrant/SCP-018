@@ -17,6 +17,12 @@
 AddCSLuaFile("shared.lua")
 include("shared.lua")
 
+local MultSpeed = {}
+MultSpeed[0] = 2
+MultSpeed[1] = 2
+MultSpeed[2] = 0.9
+MultSpeed[3] = 0.5
+
 function ENT:Initialize()
 	self:SetModel( "models/bouncy_ball/bouncy_ball.mdl" )
 	self:RebuildPhysics()
@@ -49,7 +55,7 @@ function ENT:PhysicsCollide( data, physobj )
 	NewVelocity:Normalize()
 
 	LastSpeed = math.max( NewVelocity:Length(), LastSpeed )
-	local TargetVelocity = NewVelocity * LastSpeed * 2
+	local TargetVelocity = NewVelocity * LastSpeed * MultSpeed[self:WaterLevel()]
 	physobj:SetVelocity( TargetVelocity )
 
 end
