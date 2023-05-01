@@ -47,6 +47,14 @@ function ENT:PhysicsCollide( data, physobj )
 		if (data.Speed > 200) then
 			data.HitEntity:TakeDamage( data.Speed/30, self, self )
 		end
+	else
+		if (data.Speed > 1500) then
+			if data.HitEntity:GetClass() == "func_door" or data.HitEntity:GetClass() == "prop_door_rotating" then
+				data.HitEntity:Fire("open")
+			else
+				data.HitEntity:TakeDamage( 200, self, self )
+			end
+		end
 	end
 
 	-- Bounce like a crazy bitch
@@ -64,5 +72,17 @@ function ENT:OnTakeDamage( dmginfo )
 	self:TakePhysicsDamage( dmginfo )
 end
 
-function ENT:Use( activator, caller )
+function ENT:Use( ply)
+	if (self:IsNotMoving()) then
+		self:Remove()
+		ply:Give("swep_scp018")
+	end
+end
+
+function ENT:IsNotMoving()
+	local Phys = self:GetPhysicsObject()
+	if (Phys:GetVelocity() == Vector(0, 0, 0) or self:GetMoveType() == MOVETYPE_NONE ) then
+		return true
+	end
+	return false
 end
