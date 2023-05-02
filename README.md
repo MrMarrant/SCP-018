@@ -28,5 +28,5 @@ Is compatible on all gamemodes normally, but I recommend its use on ```darkrp```
 ### 🤝 Credits
 
 - [Model](https://sketchfab.com/3d-models/ball-a9129483b3ca4d79b26fd749f7792001) by Tycho Magnetic Anomaly.<br>
-- [Bouncy Sound](https://sketchfab.com/3d-models/ball-a9129483b3ca4d79b26fd749f7792001) from FreeSound.<br>
+- [Bouncy Sound](https://freesound.org/) from FreeSound.<br>
 Every animation was made by myself, dont steal it pleise.
