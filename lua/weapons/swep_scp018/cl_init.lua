@@ -20,3 +20,6 @@ SWEP.PrintName = "SCP-018"
 SWEP.Author = "MrMarrant"
 SWEP.Purpose = "Trhow It Like a Rainbow"
 SWEP.DrawCrosshair = false
+SWEP.Base = "weapon_base"
+SWEP.AutoSwitchTo = false
+SWEP.AutoSwitchFrom = false

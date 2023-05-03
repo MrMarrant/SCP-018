@@ -24,10 +24,10 @@ SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
 SWEP.ViewModel = Model( "models/weapons/v_scp018.mdl" )
-SWEP.WorldModel = ""
+SWEP.WorldModel = "models/bouncy_ball/bouncy_ball.mdl"
 
 SWEP.ViewModelFOV = 65
-SWEP.HoldType = "fist"
+SWEP.HoldType = "grenade"
 SWEP.UseHands = true
 
 SWEP.Primary.ClipSize = -1
@@ -46,6 +46,8 @@ SWEP.DrawAmmo = false
 SWEP.PrimaryCooldown = 3
 
 function SWEP:Initialize()
+	self:SetWeaponHoldType( self.HoldType )
+	self:SetHoldType( self.HoldType )
 end
 
 function SWEP:Deploy()
