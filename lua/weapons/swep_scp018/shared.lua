@@ -43,7 +43,7 @@ SWEP.DrawAmmo = false
 
 -- Variables Personnal to this weapon --
 -- [[ STATS WEAPON ]]
-SWEP.PrimaryCooldown = 1.5
+SWEP.PrimaryCooldown = 3
 
 function SWEP:Initialize()
 end
@@ -55,6 +55,8 @@ function SWEP:Deploy()
 	self:SetPlaybackRate( speedAnimation )
 	local VMAnim = ply:GetViewModel()
 	local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate() 
+	self:SetNextPrimaryFire( CurTime() + NexIdle )
+	self:SetNextSecondaryFire( CurTime() + NexIdle )
 	timer.Simple(NexIdle, function()
 		if(!self:IsValid()) then return end
 		self:SendWeaponAnim( ACT_VM_IDLE )
@@ -75,7 +77,15 @@ end
 function SWEP:PrimaryAttack()
 	if CLIENT then return end
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
-	self:DropSCP018(false)
+	self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
+	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	local VMAnim = self:GetOwner():GetViewModel()
+	local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
+	NexIdle = NexIdle - 0.3
+	timer.Simple(NexIdle, function()
+		if(!self:IsValid()) then return end
+		self:DropSCP018(false)
+	end)
 end
 
 function SWEP:SecondaryAttack()
@@ -89,7 +99,8 @@ function SWEP:DropSCP018(OnGround)
 	local LookForward = Ply:EyeAngles():Forward()
 	local LookUp = Ply:EyeAngles():Up()
 	local SCP018 = ents.Create( "scp_018" )
-	local PosObject = Ply:GetShootPos() + LookForward * 30 + LookUp
+	local DistanceToPos = OnGround and 50 or 30
+	local PosObject = Ply:GetShootPos() + LookForward * DistanceToPos + LookUp
 	if (OnGround) then
 		PosObject.z = Ply:GetPos().z
 	end
