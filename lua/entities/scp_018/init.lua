@@ -81,7 +81,7 @@ end
 
 function ENT:IsNotMoving()
 	local Phys = self:GetPhysicsObject()
-	if (Phys:GetVelocity() == Vector(0, 0, 0) or self:GetMoveType() == MOVETYPE_NONE ) then
+	if (Phys:GetVelocity():Length() <= 100 or self:GetMoveType() == MOVETYPE_NONE ) then
 		return true
 	end
 	return false
