@@ -24,7 +24,7 @@ SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
 SWEP.ViewModel = Model( "models/weapons/v_scp018.mdl" )
-SWEP.WorldModel = "models/bouncy_ball/bouncy_ball.mdl"
+SWEP.WorldModel = ""
 
 SWEP.ViewModelFOV = 65
 SWEP.HoldType = "grenade"
@@ -77,13 +77,15 @@ function SWEP:OnDrop()
 end
 
 function SWEP:PrimaryAttack()
-	if CLIENT then return end
 	self:SetNextPrimaryFire( CurTime() + self.PrimaryCooldown )
 	self:SendWeaponAnim( ACT_VM_PRIMARYATTACK )
-	self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
 	local VMAnim = self:GetOwner():GetViewModel()
 	local NexIdle = VMAnim:SequenceDuration() / VMAnim:GetPlaybackRate()
 	NexIdle = NexIdle - 0.3
+	timer.Simple(NexIdle/2, function()
+		if(!self:IsValid()) then return end
+		self:GetOwner():SetAnimation( PLAYER_ATTACK1 )
+	end)
 	timer.Simple(NexIdle, function()
 		if(!self:IsValid()) then return end
 		self:DropSCP018(false)
@@ -97,6 +99,7 @@ function SWEP:SecondaryAttack()
 end
 
 function SWEP:DropSCP018(OnGround)
+	if CLIENT then return end
 	local Ply = self:GetOwner()
 	local LookForward = Ply:EyeAngles():Forward()
 	local LookUp = Ply:EyeAngles():Up()
