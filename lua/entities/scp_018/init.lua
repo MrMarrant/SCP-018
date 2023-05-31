@@ -40,19 +40,39 @@ end
 local BounceSound = Sound( "bouncy_ball/ball_noise.mp3" )
 
 function ENT:PhysicsCollide( data, physobj )
+	local EntHit = data.HitEntity
 	if ( data.Speed > 50 and data.DeltaTime > 0.01) then
 		sound.Play( BounceSound, self:GetPos(), 75, math.random( 50, 160 ) )	
 	end
-	if (data.HitEntity:IsPlayer()) then
+	if (EntHit:IsPlayer()) then
 		if (data.Speed > 200) then
-			data.HitEntity:TakeDamage( data.Speed/30, self, self )
+			EntHit:TakeDamage( data.Speed/30, self, self )
 		end
 	else
 		if (data.Speed > 1500) then
-			if data.HitEntity:GetClass() == "func_door" or data.HitEntity:GetClass() == "prop_door_rotating" then
-				data.HitEntity:Fire("open")
+			local EntHitClass = EntHit:GetClass()
+			if EntHitClass == "prop_door_rotating" then
+				local BrokenDoor = ents.Create("prop_physics")
+				BrokenDoor:SetPos(EntHit:GetPos())
+				BrokenDoor:SetAngles(EntHit:GetAngles())
+				BrokenDoor:SetModel(EntHit:GetModel())
+				BrokenDoor:SetBodyGroups(EntHit:GetBodyGroups())
+				BrokenDoor:SetSkin(EntHit:GetSkin())
+				BrokenDoor:SetCustomCollisionCheck(true)
+
+				EntHit:EmitSound("doors/heavy_metal_stop1.wav",350,120)
+				EntHit:Remove()
+
+				BrokenDoor:Spawn()
+
+				local PhysBrokenDoor = BrokenDoor:GetPhysicsObject()
+				if IsValid(PhysBrokenDoor) then
+					PhysBrokenDoor:ApplyForceOffset(self:GetForward() * 500, PhysBrokenDoor:GetMassCenter())
+				end
+			elseif EntHitClass == "func_door" or EntHitClass == "func_door_rotating" then
+				EntHit:Fire("open")
 			else
-				data.HitEntity:TakeDamage( 200, self, self )
+				EntHit:TakeDamage( 200, self, self )
 			end
 		end
 	end
