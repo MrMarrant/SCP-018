@@ -23,8 +23,8 @@ SWEP.SlotPos = 1
 SWEP.Spawnable = true
 
 SWEP.Category = "SCP"
-SWEP.ViewModel = Model( "models/weapons/v_scp018.mdl" )
-SWEP.WorldModel = ""
+SWEP.ViewModel = Model( "models/weapons/scp_018/v_scp018.mdl" )
+SWEP.WorldModel = Model( "models/weapons/scp_018/w_scp018.mdl" )
 
 SWEP.ViewModelFOV = 65
 SWEP.HoldType = "grenade"
